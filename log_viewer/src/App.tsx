@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useCallback } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { parseNDJSON } from './utils/parser';
 import type { ParsedData, SortConfig, SeverityConfig } from './types';
 import { DEFAULT_COLUMNS, DEFAULT_SEVERITY_RULES } from './types';
@@ -20,7 +20,6 @@ function detectSeverityField(columns: string[]): string {
 
 export default function App() {
   const [phase, setPhase] = useState<AppPhase>('upload');
-  const [loading, setLoading] = useState(false);
   const [filename, setFilename] = useState('');
   const [parsed, setParsed] = useState<ParsedData>({ columns: [], rows: [] });
   const [selectedColumns, setSelectedColumns] = useState<Set<string>>(new Set());
@@ -55,25 +54,6 @@ export default function App() {
     setSortConfig(null);
     setPhase('configure');
   }, []);
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const fileId = params.get('file');
-    if (!fileId) return;
-
-    setLoading(true);
-    fetch(`/api/file/${fileId}`)
-      .then((res) => {
-        if (!res.ok) throw new Error('File not found');
-        return res.text();
-      })
-      .then((content) => {
-        handleFileLoaded(content, `upload-${fileId}`);
-      })
-      .catch(() => {
-        setLoading(false);
-      });
-  }, [handleFileLoaded]);
 
   const activeColumns = useMemo(
     () => parsed.columns.filter((c) => selectedColumns.has(c)),
@@ -134,7 +114,7 @@ export default function App() {
 
       {phase === 'upload' && (
         <main className="max-w-[1600px] mx-auto px-4 py-6 w-full">
-          <FileUpload onFileLoaded={handleFileLoaded} loading={loading} />
+          <FileUpload onFileLoaded={handleFileLoaded} />
         </main>
       )}
 

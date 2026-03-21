@@ -2,10 +2,9 @@ import { useState, useCallback, type DragEvent } from 'react';
 
 interface Props {
   onFileLoaded: (content: string, filename: string) => void;
-  loading: boolean;
 }
 
-export default function FileUpload({ onFileLoaded, loading }: Props) {
+export default function FileUpload({ onFileLoaded }: Props) {
   const [dragging, setDragging] = useState(false);
 
   const handleFile = useCallback(
@@ -37,20 +36,6 @@ export default function FileUpload({ onFileLoaded, loading }: Props) {
   }, []);
 
   const handleDragLeave = useCallback(() => setDragging(false), []);
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center p-12 border-2 border-dashed border-[--color-border] rounded-lg bg-[--color-bg-secondary]">
-        <div className="flex items-center gap-3 text-[--color-text-muted]">
-          <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24" fill="none">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-          </svg>
-          Loading file from server...
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div
@@ -84,9 +69,6 @@ export default function FileUpload({ onFileLoaded, loading }: Props) {
           Supports NDJSON files from logproc (--save or --format json)
         </p>
       </div>
-      <p className="text-xs text-[--color-text-muted] mt-2">
-        Or use: <code className="font-mono bg-[--color-bg-tertiary] px-1.5 py-0.5 rounded">curl -F 'file=@logs.txt' http://localhost:3000/api/upload</code>
-      </p>
     </div>
   );
 }
