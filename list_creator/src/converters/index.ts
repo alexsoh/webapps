@@ -1,7 +1,7 @@
 import type { ConverterInfo } from '../types';
 import { jsonConverter } from './json';
 import { powershellConverter } from './powershell';
-import { sqlInConverter, sqlInsertConverter } from './sql';
+import { sqlInConverter, sqlInsertConverter, sqlValuesConverter } from './sql';
 import { markdownConverter } from './markdown';
 import { yamlConverter } from './yaml';
 import { pythonConverter } from './python';
@@ -15,6 +15,7 @@ export const converters: ConverterInfo[] = [
   powershellConverter,
   sqlInConverter,
   sqlInsertConverter,
+  sqlValuesConverter,
   markdownConverter,
   yamlConverter,
   pythonConverter,

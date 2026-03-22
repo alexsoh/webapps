@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 
 interface OutputDisplayProps {
   output: string;
@@ -7,6 +7,15 @@ interface OutputDisplayProps {
 
 export default function OutputDisplay({ output, formatName }: OutputDisplayProps) {
   const [copied, setCopied] = useState(false);
+  const preRef = useRef<HTMLPreElement>(null);
+
+  const scrollToTop = useCallback(() => {
+    preRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  const scrollToBottom = useCallback(() => {
+    preRef.current?.scrollTo({ top: preRef.current.scrollHeight, behavior: 'smooth' });
+  }, []);
 
   const handleCopy = useCallback(async () => {
     try {
@@ -50,9 +59,27 @@ export default function OutputDisplay({ output, formatName }: OutputDisplayProps
           {copied ? 'Copied!' : 'Copy'}
         </button>
       </div>
-      <pre className="p-4 rounded border border-[--color-border] bg-[--color-bg-secondary] overflow-auto max-h-96 font-mono text-sm text-[--color-syntax-orange] leading-relaxed whitespace-pre-wrap break-words">
-        {output}
-      </pre>
+      <div className="relative">
+        <pre ref={preRef} className="p-4 rounded border border-[--color-border] bg-[--color-bg-secondary] overflow-auto max-h-96 font-mono text-sm text-[--color-syntax-orange] leading-relaxed whitespace-pre-wrap break-words">
+          {output}
+        </pre>
+        <div className="absolute bottom-2 right-3 flex flex-col gap-1">
+          <button
+            onClick={scrollToTop}
+            title="Scroll to top"
+            className="w-7 h-7 flex items-center justify-center rounded bg-[--color-bg-tertiary]/80 text-[--color-text-secondary] hover:text-[--color-text-primary] border border-[--color-border] hover:border-[--color-text-muted] backdrop-blur-sm transition-colors text-xs"
+          >
+            ▲
+          </button>
+          <button
+            onClick={scrollToBottom}
+            title="Scroll to bottom"
+            className="w-7 h-7 flex items-center justify-center rounded bg-[--color-bg-tertiary]/80 text-[--color-text-secondary] hover:text-[--color-text-primary] border border-[--color-border] hover:border-[--color-text-muted] backdrop-blur-sm transition-colors text-xs"
+          >
+            ▼
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
