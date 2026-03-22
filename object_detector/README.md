@@ -4,10 +4,19 @@ A Python CLI tool that detects objects in images using YOLO models (YOLO11, YOLO
 
 ## Setup
 
+**macOS / Linux:**
 ```bash
 cd project/object_detector
 python3 -m venv venv
 source venv/bin/activate
+pip install -r requirements.txt
+```
+
+**Windows:**
+```cmd
+cd project\object_detector
+python -m venv venv
+venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
@@ -56,7 +65,7 @@ python detect.py --list-classes --model yolo11n
 | `image_path` | Path to input image (required unless using `--list-*`) | — |
 | `--model` | Model short name or `.pt` file path | `yolo26n` |
 | `--confidence` | Minimum confidence threshold (0–1) | `0.25` |
-| `--device` | Inference device: `cpu`, `0`/`1` (CUDA), `mps` (Apple Silicon) | auto |
+| `--device` | Inference device: `cpu`, `0`/`1` (CUDA GPU), `mps` (macOS Apple Silicon only) | auto |
 | `--filter` | Comma-separated class names to keep | all |
 | `--save-image` | Path to save annotated image with bounding boxes | — |
 | `--json` | Output detections as JSON | table |
@@ -65,7 +74,11 @@ python detect.py --list-classes --model yolo11n
 
 ## Models
 
-Pretrained weights are **auto-downloaded** on first use to `~/.config/Ultralytics/`. No manual download needed.
+Pretrained weights are **auto-downloaded** on first use. No manual download needed.
+
+Cache location by OS:
+- **macOS / Linux:** `~/.config/Ultralytics/`
+- **Windows:** `C:\Users\<user>\AppData\Roaming\Ultralytics\`
 
 Available model families (each in n/s/m/l/x sizes):
 
