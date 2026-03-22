@@ -27,6 +27,7 @@ jobs:
           cache-dependency-path: |
             list_creator/package-lock.json
             log_viewer/package-lock.json
+            json_builder/package-lock.json
 
       - name: Install and build list_creator
         working-directory: list_creator
@@ -40,11 +41,18 @@ jobs:
           npm ci
           npm run build
 
+      - name: Install and build json_builder
+        working-directory: json_builder
+        run: |
+          npm ci
+          npm run build
+
       - name: Assemble Pages site
         run: |
-          mkdir -p _site/list_creator _site/log_viewer
+          mkdir -p _site/list_creator _site/log_viewer _site/json_builder
           cp -r list_creator/dist/* _site/list_creator/
           cp -r log_viewer/dist/* _site/log_viewer/
+          cp -r json_builder/dist/* _site/json_builder/
 
       - uses: actions/upload-pages-artifact@v3
         with:
