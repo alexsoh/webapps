@@ -33,6 +33,8 @@ export function flattenEntry(obj: Record<string, unknown>): FlattenedRow {
   return result;
 }
 
+const TSV_PREFIX = /^\d{13}\t/;
+
 export function parseNDJSON(text: string): ParsedData {
   const lines = text.split('\n').filter((line) => line.trim().length > 0);
   const columnsSet = new Set<string>();
@@ -40,7 +42,20 @@ export function parseNDJSON(text: string): ParsedData {
 
   for (const line of lines) {
     try {
-      const parsed = JSON.parse(line) as Record<string, unknown>;
+      let parsed: Record<string, unknown>;
+      if (TSV_PREFIX.test(line)) {
+        const firstTab = line.indexOf('\t');
+        const secondTab = line.indexOf('\t', firstTab + 1);
+        if (secondTab === -1) continue;
+        const epochStr = line.substring(0, firstTab);
+        const jsonStr = line.substring(secondTab + 1);
+        parsed = JSON.parse(jsonStr) as Record<string, unknown>;
+        if (!('@timestamp' in parsed)) {
+          parsed['@timestamp'] = epochStr;
+        }
+      } else {
+        parsed = JSON.parse(line) as Record<string, unknown>;
+      }
       if ('Done' in parsed) continue;
       const flat = flattenEntry(parsed);
       for (const key of Object.keys(flat)) {

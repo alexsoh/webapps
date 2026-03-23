@@ -42,4 +42,9 @@ export const DEFAULT_COLUMNS = [
   'payload.fields.endpoint',
   'payload.fields.source_file',
   'payload.fields.message',
+  'severity',
+  'message',
+  'source_file',
+  'context.endpoint',
+  'trace_id',
 ];
