@@ -49,10 +49,11 @@ jobs:
 
       - name: Assemble Pages site
         run: |
-          mkdir -p _site/list_creator _site/log_viewer _site/json_builder
+          mkdir -p _site/list_creator _site/log_viewer _site/json_builder _site/miracon_web
           cp -r list_creator/dist/* _site/list_creator/
           cp -r log_viewer/dist/* _site/log_viewer/
           cp -r json_builder/dist/* _site/json_builder/
+          cp -r miracon_web/* _site/miracon_web/
 
       - uses: actions/upload-pages-artifact@v3
         with:
