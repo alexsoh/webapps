@@ -1,0 +1,4 @@
+#!/usr/bin/with-contenv bashio
+if [[ "${1}" != "0" ]]; then
+    bashio::log.warning "hawkeye2ha exited with code ${1}"
+fi
