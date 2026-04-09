@@ -16,10 +16,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: [self-hosted, Windows]
-    defaults:
-      run:
-        shell: bash
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -64,7 +61,7 @@ jobs:
 
   deploy:
     needs: build
-    runs-on: [self-hosted, Windows]
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
