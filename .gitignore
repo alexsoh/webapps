@@ -1,4 +1,8 @@
 .DS_Store
+
+# Standalone nested git repo — not tracked here (open `vizrec/` as its own workspace / remote).
+vizrec/
+
 node_modules/
 dist/
 venv/
@@ -7,3 +11,4 @@ venv/
 .env
 .env.*
 .ai/
+.cursor/
